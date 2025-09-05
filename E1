@@ -1,0 +1,46 @@
+obejto1 <-56
+objeto2<- "56" #caracter:simbolico
+
+objeto1
+objeto2
+
+#vectores y dataframes
+
+Nombres <-c("Diego", "Fernanda", "Daniel", "Laura", "Manuel")
+Edad_ch <-c("24", "25", "24", "25","41")
+Edad_nu <-c(24,25,24,25,41)
+
+Tabla <- data.frame(Nombres, Edades_ch, Edad_nu)
+head(Tabla)
+
+#llamar base de datos
+
+install.packages("vroom") #Instalación de paquetes
+
+library ("vroom")
+
+Genes <- vroom (file="https://raw.githubusercontent.com/ManuelLaraMVZ/Transcript-mica/refs/heads/main/Genes.csv")
+View(Genes)
+
+install.packages("dplyr")
+library("dplyr") #dplyr sirve para facilitar el manejo de los datos
+
+  Filtro1 <- Genes %>% #Ctr/Cmd+Shift+m
+    #Signifca: crearemos un objeto llamado Filtro1
+    #a aprtir del objeto "genes"
+    #al cual le vamos a hacer lo siguiente:
+    filter(Gen=="P1F1") 
+  
+  Filtro1
+  "seleccionar columnas"
+  Selecciona <- Genes %>%
+    select(1,2,3,4)
+  Seleccionar
+  
+  "Multiples funciones"
+  
+  MF <- Genes %<%
+    select (-2:-4) %>%
+    filter (Gen == "B actina")
+  mutate(Promedio = ((T1+T2+T3)/3)
+    MF
