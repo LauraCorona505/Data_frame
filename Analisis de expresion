@@ -1,0 +1,48 @@
+install.packages("pacman")
+#pacman sirve para llamar o abrir otros paquete; igual si no estan los instala
+library("pacman")
+p_load("vroom", #vroom --> Llamar bases de datos
+       "dplyr") #dplyr --> facilita el manejo de datos
+
+#crear base de datos/objeto
+Genes <- vroom(file="https://raw.githubusercontent.com/ManuelLaraMVZ/Transcript-mica/refs/heads/main/Genes.csv")
+
+#Para abrir una base de datos solo escribir el nombre
+Genes
+
+#Paso 1: Excluir el gen de referencia de la tabla (actina)
+GR <- Genes %>% #cmd + shift + m
+  filter(Gen == "B-actina")
+#Para verlo volver a escribirlo y correr
+GR
+
+#Paso 2: Quitar la B-actina de la tabla
+GI <- Genes %>% 
+  slice (-1) 
+#correr
+GI
+
+#Hace la resta de CT 
+Delta_Ct <- GI %>% 
+  mutate(DC1 = C1 - GR$C1,
+         DC2 = C2 - GR$C2,
+         DC3 = C3 - GR$C3,
+         DT1 = T1 - GR$T1,
+         DT2 = T2 - GR$T2,
+         DT3 = T3 - GR$T3) %>% 
+  select(-C1:-T3) #Quitamos las columnas de C1 a T3
+Delta_Ct
+
+Dos_DCt <- Delta_Ct %>% 
+  mutate(Dos_DCt_C1 = 2^(-DC1),
+         Dos_DCt_C2 = 2^(-DC3),
+         Dos_DCt_C3 = 2^(-DC2),
+         Dos_DCt_T1 = 2^(-DT1),
+         Dos_DCt_T2 = 2^(-DT2),
+         Dos_DCt_T3 = 2^(-DT3)) %>% 
+  select(-DC1:-DT3) %>% 
+  mutate (Dos_DCt_Cx = (Dos_DCt_C1+Dos_DCt_C2+Dos_DCt_C3)/3,
+          Dos_DCt_Tx = (Dos_DCt_T1+Dos_DCt_T2+Dos_DCt_T3)/3,
+          DosDD = Dos_DCt_Tx/Dos_DCt_Cx)
+
+Dos_DCt
