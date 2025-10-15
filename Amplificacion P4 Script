@@ -1,0 +1,21 @@
+# Paquetes
+if(!require("pacman")) install.packages("pacman")
+library(pacman)
+p_load(vroom, ggplot2)
+
+# Cargar los datos de amplificación
+Amplif <- vroom("https://raw.githubusercontent.com/LauraCorona505/Data_frame/refs/heads/main/Amplificaci%C3%B3n-TABLA")  
+
+# Graficar solo el pozo A4
+graficaAmp <- ggplot(Amplif, aes(x = Cycle, y = A4)) +
+  geom_line(color = "#BF3EFF", size = 0.7) +
+  geom_point(size = 0.8, color = "#68228B") +
+  theme_classic() +
+  labs(
+    title = "Curva de amplificación - Pozo A4",
+    subtitle = "Concentración de plásmido GFP en 1µL",
+    caption = "Diseñado por Laura Corona",
+    x = "Ciclo",
+    y = "Fluorescencia (RFU)"
+  )
+graficaAmp
