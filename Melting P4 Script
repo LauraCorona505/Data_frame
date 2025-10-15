@@ -1,0 +1,23 @@
+# Paquetes
+if(!require("pacman")) install.packages("pacman")
+library(pacman)
+p_load(vroom, ggplot2)
+
+#Pasar los datos a mi gibhut en formato RAW
+#Cargar los datos de melting
+Melting <- vroom("https://raw.githubusercontent.com/LauraCorona505/Data_frame/refs/heads/main/Melting-TABLA")
+head(Melting)
+# Graficar solo el pozo A4
+graficaMelt<- ggplot(Melting, aes(x = Temperature, 
+                      y = A4)) +
+  geom_line(color = "#BF3EFF", size = 0.6) +
+  geom_point(size = 0.8, color = "#68228B") +
+  theme_classic() +
+  labs(
+    title = "Curva de disociación - Pozo A4",
+    subtitle = "Concentración de plásmido GFP en 1µL",
+    caption = "Diseñado por Laura Corona",
+    x = "Temperatura (°C)",
+    y = "Fluorescencia"
+  )
+graficaMelt
